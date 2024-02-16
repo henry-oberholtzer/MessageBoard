@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MessageBoard.Controllers;
 
 [Authorize]
-public class PostsController: Controller
+public class PostsController : Controller
 {
   private readonly MessageBoardContext _db;
   private readonly UserManager<ApplicationUser> _userManager;
@@ -24,6 +24,33 @@ public class PostsController: Controller
   public Post FindPostById(int id)
   {
     return _db.Posts.Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).Include(p => p.User).FirstOrDefault(p => p.PostId == id);
+  }
+
+  public void CreatePostTopics(string newTopics, int postId)
+  {
+    if (!string.IsNullOrEmpty(newTopics))
+    {
+      List<string> newTitles = newTopics.Split(",").ToList();
+      foreach (string title in newTitles)
+      {
+        string normalized = title.Trim().Normalize();
+        if (!_db.Topics.Any(t => t.Title.ToUpper() == normalized.ToUpper()))
+        {
+          Topic topic = new()
+          {
+            Title = normalized,
+            DateCreated = DateTime.Now,
+          };
+          _db.Topics.Add(topic);
+          _db.SaveChanges();
+          _db.PostTopics.Add(new PostTopic{
+            PostId =  postId,
+            TopicId = topic.TopicId
+          });
+        }
+      }
+      _db.SaveChanges();
+    }
   }
 
   public async Task<ActionResult> Index()
@@ -40,7 +67,7 @@ public class PostsController: Controller
   public ActionResult Create()
   {
     SelectList topics = new(_db.Topics.ToList(), "TopicId", "Title");
-    return View("PostForm", new PostForumViewModel{ TopicOptions = topics});
+    return View("PostForm", new PostForumViewModel { TopicOptions = topics });
   }
 
   [HttpPost]
@@ -55,6 +82,7 @@ public class PostsController: Controller
     Post newPost = model.ToNewPost(currentUser);
     _db.Posts.Add(newPost);
     _db.SaveChanges();
+    CreatePostTopics(model.NewTopic, newPost.PostId);  
     return RedirectToAction("Index");
   }
 
@@ -69,11 +97,24 @@ public class PostsController: Controller
   [HttpPost]
   public ActionResult Edit(PostForumViewModel model)
   {
-    if(!ModelState.IsValid)
+    if (!ModelState.IsValid)
     {
       return View("PostForm", model);
     }
-    _db.Posts.Update(model.EditPost(FindPostById(model.PostId)));
+    Post target = FindPostById(model.PostId);
+    foreach (PostTopic pt in target.PostTopics)
+    {
+      _db.PostTopics.Remove(pt);
+    }
+    _db.SaveChanges();
+    foreach (int i in model.SelectedTopics) {
+      _db.PostTopics.Add(new PostTopic{
+        PostId = model.PostId,
+        TopicId = i
+      });
+    }
+    CreatePostTopics(model.NewTopic, model.PostId);
+    _db.Posts.Update(model.EditPost(target));
     _db.SaveChanges();
     return RedirectToAction("Index");
   }
