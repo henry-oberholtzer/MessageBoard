@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Controllers;
@@ -21,9 +22,9 @@ public class PostsController : Controller
     _db = db;
   }
 
-  public Post FindPostById(int id)
+  public async Task<Post> FindPostById(int id)
   {
-    return _db.Posts.Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).Include(p => p.User).FirstOrDefault(p => p.PostId == id);
+    return await _db.Posts.Include(p => p.User).Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).FirstOrDefaultAsync(p => p.PostId == id);
   }
 
   public void CreatePostTopics(string newTopics, int postId)
@@ -52,8 +53,19 @@ public class PostsController : Controller
       _db.SaveChanges();
     }
   }
-
+  [AllowAnonymous]
   public async Task<ActionResult> Index()
+  {
+    List<Post> posts = await _db.Posts
+    .Include(p => p.User)
+    .Include(p => p.PostTopics)
+    .ThenInclude(pt => pt.Topic)
+    .OrderBy(p => p.DatePosted)
+    .ToListAsync();
+    return View(posts);
+  }
+
+  public async Task<IActionResult> UserPosts()
   {
     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
@@ -61,7 +73,7 @@ public class PostsController : Controller
     .Include(p => p.PostTopics)
     .Where(entry => entry.User.Id == currentUser.Id)
     .ToList();
-    return View(userPosts);
+    return PartialView(userPosts);
   }
 
   public ActionResult Create()
@@ -86,22 +98,22 @@ public class PostsController : Controller
     return RedirectToAction("Index");
   }
 
-  public ActionResult Edit(int id)
+  public async Task<ActionResult> Edit(int id)
   {
-    Post target = FindPostById(id);
+    Post target = await FindPostById(id);
     SelectList topics = new(_db.Topics.ToList(), "TopicId", "Title");
     List<int> selectedTopics = target.PostTopics.Select(pt => pt.TopicId).ToList();
     return View("PostForm", new PostForumViewModel(target, topics, selectedTopics, true));
   }
 
   [HttpPost]
-  public ActionResult Edit(PostForumViewModel model)
+  public async Task<ActionResult> Edit(PostForumViewModel model)
   {
     if (!ModelState.IsValid)
     {
       return View("PostForm", model);
     }
-    Post target = FindPostById(model.PostId);
+    Post target = await FindPostById(model.PostId);
     foreach (PostTopic pt in target.PostTopics)
     {
       _db.PostTopics.Remove(pt);
@@ -118,16 +130,17 @@ public class PostsController : Controller
     _db.SaveChanges();
     return RedirectToAction("Index");
   }
-
-  public ActionResult Details(int id)
+  
+  [AllowAnonymous]
+  public async Task<IActionResult> Details(int id)
   {
-    return View(FindPostById(id));
+    return View(await FindPostById(id));
   }
 
   [HttpPost]
-  public ActionResult Delete(int id)
+  public async Task<ActionResult> Delete(int id)
   {
-    _db.Posts.Remove(FindPostById(id));
+    _db.Posts.Remove(await FindPostById(id));
     _db.SaveChanges();
     return RedirectToAction("Index");
   }

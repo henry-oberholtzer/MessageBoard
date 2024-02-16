@@ -3,7 +3,7 @@
 @foreach (Post p in Model)
 {
   <div>
-    <h4>@Html.ActionLink(p.Body, "Details", "Posts", new { id = p.PostId })</h4>
-
+    <h6>@p.User.UserName</h6>
+    <p>@Html.ActionLink(p.Body, "Details", "Posts", new { id = p.PostId })</p>
   </div>
 }

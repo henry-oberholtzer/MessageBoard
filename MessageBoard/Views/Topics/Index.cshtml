@@ -1,0 +1,9 @@
+@model List<Topic>
+
+@foreach (Topic t in Model)
+{
+  <div>
+    <h4>@Html.ActionLink(t.Title, "Details", "Topics", new { id = t.TopicId })</h4>
+    <p>@t.PostTopics.Count post(s) in this topic</p>
+  </div>
+}

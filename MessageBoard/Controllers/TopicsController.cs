@@ -27,6 +27,7 @@ public class TopicsController : Controller
     .FirstOrDefault(t => t.TopicId == id);
   }
 
+  [AllowAnonymous]
   public ActionResult Index()
   {
     List<Topic> topics = _db.Topics
@@ -37,6 +38,13 @@ public class TopicsController : Controller
   public ActionResult Details(int id)
   {
     return View(GetTopicById(id));
+  }
+
+  public ActionResult Delete(int id)
+  {
+    _db.Remove(GetTopicById(id));
+    _db.SaveChanges();
+    return RedirectToAction("Index");
   }
 
 }
