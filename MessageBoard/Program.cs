@@ -11,6 +11,7 @@
 using Microsoft.EntityFrameworkCore;
 using MessageBoard.Utilities;
 using MessageBoard.Models;
+using Microsoft.AspNetCore.Identity;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,10 @@ builder.Services.AddDbContext<MessageBoardContext>(
     )
 );
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<MessageBoardContext>()
+    .AddDefaultTokenProviders();
+
 WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -36,6 +41,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthentication();
 
 app.UseEndpoints(endpoints =>
 {
