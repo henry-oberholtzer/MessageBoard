@@ -8,7 +8,7 @@ public class PostTopic
 
   public int TopicId { get; set; }
 
-  public Post Post { get; }
+  public Post Post { get; set; }
 
-  public Topic Topic { get; }
+  public Topic Topic { get; set; }
 }

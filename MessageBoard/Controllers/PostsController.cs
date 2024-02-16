@@ -21,6 +21,11 @@ public class PostsController: Controller
     _db = db;
   }
 
+  public Post FindPostById(int id)
+  {
+    return _db.Posts.Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).Include(p => p.User).FirstOrDefault(p => p.PostId == id);
+  }
+
   public async Task<ActionResult> Index()
   {
     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +48,7 @@ public class PostsController: Controller
   {
     if (!ModelState.IsValid)
     {
-      return View(model);
+      return View("PostForm", model);
     }
     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
@@ -52,4 +57,39 @@ public class PostsController: Controller
     _db.SaveChanges();
     return RedirectToAction("Index");
   }
+
+  public ActionResult Edit(int id)
+  {
+    Post target = FindPostById(id);
+    SelectList topics = new(_db.Topics.ToList(), "TopicId", "Title");
+    List<int> selectedTopics = target.PostTopics.Select(pt => pt.TopicId).ToList();
+    return View("PostForm", new PostForumViewModel(target, topics, selectedTopics, true));
+  }
+
+  [HttpPost]
+  public ActionResult Edit(PostForumViewModel model)
+  {
+    if(!ModelState.IsValid)
+    {
+      return View("PostForm", model);
+    }
+    _db.Posts.Update(model.EditPost(FindPostById(model.PostId)));
+    _db.SaveChanges();
+    return RedirectToAction("Index");
+  }
+
+  public ActionResult Details(int id)
+  {
+    return View(FindPostById(id));
+  }
+
+  [HttpPost]
+  public ActionResult Delete(int id)
+  {
+    _db.Posts.Remove(FindPostById(id));
+    _db.SaveChanges();
+    return RedirectToAction("Index");
+  }
+
+
 }

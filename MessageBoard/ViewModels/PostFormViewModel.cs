@@ -41,4 +41,18 @@ public class PostForumViewModel
     return post;
   }
 
+  public PostForumViewModel()
+  {
+
+  }
+
+  public PostForumViewModel(Post post, SelectList topics, List<int> selectedTopics, bool edit)
+  {
+    PostBody = post.Body;
+    PostId = post.PostId;
+    TopicOptions = topics;
+    Edit = edit;
+    SelectedTopics = selectedTopics;
+  }
+
 }
