@@ -1,6 +1,6 @@
 # MessageBoard
 
-A web application built with C# and Razor Pages, using the MVC structure and a MySQL database, using the EFCore framework.
+A web application built with C# and Razor Pages, using a MVC structure and a MySQL database, using the EFCore framework.
 
 By Henry Oberholtzer
 
@@ -10,6 +10,7 @@ By Henry Oberholtzer
 - MySQL
 - EFCore
 - Razor Pages
+- Microsoft Identity
 
 ## Features
 
