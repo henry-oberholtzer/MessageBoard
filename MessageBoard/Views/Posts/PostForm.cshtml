@@ -1,0 +1,28 @@
+@model PostForumViewModel
+@{
+  string buttonText = "Post";
+  string action = "Create";
+  if (Model.Edit)
+  {
+    buttonText = "Save";
+    action = "Edit";
+  }
+}
+
+<h1>@action Post</h1>
+@using (Html.BeginForm())
+{
+  @if(Model.Edit){
+    @Html.HiddenFor(m => m.PostId)
+  }
+  @Html.LabelFor(m => m.PostBody)
+  @Html.EditorFor(m => m.PostBody)
+  @if(Model.TopicOptions.Any())
+  {
+    @Html.LabelFor(m => m.TopicOptions)
+    <select asp-for="@Model.SelectedTopics" asp-items="@Model.TopicOptions"></select>
+  }
+  @Html.LabelFor(m => m.NewTopic)
+  @Html.TextBoxFor(m => m.NewTopic)
+  <button type="submit">@buttonText</button>
+}
