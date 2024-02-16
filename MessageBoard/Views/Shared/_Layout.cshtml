@@ -15,11 +15,7 @@
 </head>
 
 <body>
-  @await Html.PartialAsync("_Header")
-  <div id="main-container">
     @RenderBody()
-  </div>
-
   <script src="~/lib/jquery/dist/jquery.min.js"></script>
   <script src="~/js/scripts.js"></script>
   @await RenderSectionAsync("_ValidationScriptsPartial", required: false)

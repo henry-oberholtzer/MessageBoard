@@ -8,6 +8,8 @@ namespace MessageBoard.Models
     public DbSet<Post> Posts { get; set; }
 
     public DbSet<Topic> Topics { get; set; }
+
+    public DbSet<PostTopic> PostTopics { get; set; }
     public MessageBoardContext(DbContextOptions options) : base(options) { }
   }
 }

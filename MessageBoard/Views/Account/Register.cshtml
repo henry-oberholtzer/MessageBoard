@@ -1,0 +1,33 @@
+@model RegisterViewModel
+<h2>Sign up!</h2>
+<hr />
+@if(!ViewData.ModelState.IsValid)
+{
+  @Html.ValidationSummary("Please correct the following error(s):")
+}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+  @Html.LabelFor(user => user.UserName)
+<br />
+  @Html.TextBoxFor(user => user.UserName)
+<br />
+  @Html.LabelFor(user => user.ProfilePicURL)
+<br/>
+  @Html.TextBoxFor(user => user.ProfilePicURL)
+<br />
+  @Html.LabelFor(user => user.Email)
+<br />
+  @Html.TextBoxFor(user => user.Email)
+<br />
+  @Html.LabelFor(user => user.Password)
+<br/>
+  @Html.EditorFor(user => user.Password)
+<br />
+  @Html.LabelFor(user => user.ConfirmPassword)
+<br />
+  @Html.EditorFor(user => user.ConfirmPassword)
+<br />
+<br />
+  <input type="submit" value="Sign up!" />
+}
