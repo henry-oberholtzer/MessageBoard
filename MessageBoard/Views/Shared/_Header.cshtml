@@ -1,6 +1,8 @@
 <header>
+  @Html.ActionLink("Home", "Index", "Home")
   <nav>
     @Html.ActionLink("Post", "Create", "Posts")
+    @Html.ActionLink("Topics", "Index", "Topics")
   </nav>
   @await Html.PartialAsync("../Account/_IdentityCard.cshtml")
 </header>
