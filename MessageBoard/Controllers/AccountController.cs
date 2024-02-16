@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using MessageBoard.Models;
-using System.Threading.Tasks;
 using MessageBoard.ViewModels;
 
 namespace MessageBoard.Controllers;
@@ -12,7 +11,7 @@ public class AccountController : Controller
   private readonly UserManager<ApplicationUser> _userManager;
   private readonly SignInManager<ApplicationUser> _signInManager;
 
-  public AccountController (UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MessageBoardContext db)
+  public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MessageBoardContext db)
   {
     _userManager = userManager;
     _signInManager = signInManager;
@@ -30,7 +29,7 @@ public class AccountController : Controller
   }
 
   [HttpPost]
-  public async Task<ActionResult> Register (RegisterViewModel model)
+  public async Task<ActionResult> Register(RegisterViewModel model)
   {
     if (!ModelState.IsValid)
     {
@@ -53,5 +52,41 @@ public class AccountController : Controller
         return View(model);
       }
     }
+  }
+
+  public ActionResult Login()
+  {
+    return View();
+  }
+
+  [HttpPost]
+  public async Task<ActionResult> Login(LoginViewModel model)
+  {
+    if (!ModelState.IsValid)
+    {
+      return View(model);
+    }
+    else
+    {
+      Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager
+      .PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
+      if (result.Succeeded)
+      {
+        return RedirectToAction("Index");
+      }
+      else
+      {
+        ModelState.AddModelError("", "There is somethign wrong with your credentials...");
+        return View(model);
+      }
+    }
+
+  }
+
+  [HttpPost]
+  public async Task<ActionResult> LogOut()
+  {
+    await _signInManager.SignOutAsync();
+    return RedirectToAction("Index");
   }
 }

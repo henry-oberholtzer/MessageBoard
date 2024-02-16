@@ -1,0 +1,21 @@
+@model LoginViewModel
+
+<h2>Log in</h2>
+
+@if(!ViewData.ModelState.IsValid)
+{
+  @Html.ValidationSummary("Please fix the following errors and try again:")
+}
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(m => m.UserName)
+  <br />
+  @Html.TextBoxFor(m => m.UserName)
+  <br />
+  @Html.LabelFor(m => m.Password)
+  <br />
+  @Html.EditorFor(m => m.Password) 
+  <br />
+  <button type="submit">Log in</button>
+}

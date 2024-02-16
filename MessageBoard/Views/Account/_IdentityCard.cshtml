@@ -1,0 +1,16 @@
+<div>
+  @if (User.Identity.IsAuthenticated)
+  {
+    <p>@User.Identity.Name</p>
+    @using (Html.BeginForm("LogOut", "Account"))
+    {
+      <button type="submit">Log Out</button>
+    }
+  }
+  else
+  {
+    @Html.ActionLink("Register", "Register", "Account")
+    <br />
+    @Html.ActionLink("Login", "Login", "Account")
+  }
+</div>

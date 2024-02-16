@@ -6,7 +6,7 @@ namespace MessageBoard.ViewModels
   {
     [Required]
     [MaxLength(16)]
-    [Display(Name = "Username")]
+    [Display(Name = "Username, up to sixteen characters")]
     public string UserName { get; set;}
 
     [Display(Name = "Profile Picture (optional)")]
