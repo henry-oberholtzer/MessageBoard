@@ -9,4 +9,6 @@ public class Post
   public DateTime DateEdited { get; set; }
 
   public List<PostTopic> PostTopics { get; }
+
+  public ApplicationUser User { get; set; }
 }
