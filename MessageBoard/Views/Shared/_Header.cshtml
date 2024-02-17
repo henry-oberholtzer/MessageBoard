@@ -1,6 +1,6 @@
-<header>
-  @Html.ActionLink("Home", "Index", "Home")
-  <nav>
+<header class="header">
+  @Html.ActionLink("messageboard", "Index", "Home", null, new { @class = "logo row-gradient"})
+  <nav class="nav row-gradient">
     @Html.ActionLink("Posts", "Index", "Posts")
     @Html.ActionLink("Topics", "Index", "Topics")
   </nav>

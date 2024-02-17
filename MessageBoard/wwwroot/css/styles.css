@@ -1,0 +1,70 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('../fonts/orbitron/Orbitron-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Pixelify';
+  src: url('../fonts/pixelify/PixelifySans-VariableFont_wght.ttf');
+} 
+
+* a {
+  text-decoration: none;
+  color: black;
+}
+
+* {
+  font-family: 'Pixelify';
+}
+
+h1, h2, h3, h4, h5, h6, button {
+  font-family: 'Orbitron';
+}
+
+.logo {
+  font-family: 'Orbitron';
+  font-weight: 500;
+  padding: 0 10px;
+}
+
+.header {
+  width: 100%;
+  display: grid;
+  height: 128px;
+  grid-template-areas:
+  "a"
+  "b"
+  "c";
+  grid-template-columns: 1fr;
+  grid-template-rows: 32px 32px 32px; 
+}
+
+.nav {
+  padding: 0 10px;
+  grid-area: b;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  padding: 0 10px;
+  grid-area: a;
+  display: flex;
+  align-items: center;
+}
+
+.identity-card {
+  grid-area: c;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.row-gradient {
+  background-image: linear-gradient(black, lightgrey, black);
+}

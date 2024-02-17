@@ -22,6 +22,15 @@ public class PostsController : Controller
     _db = db;
   }
 
+  public void ClearUnusedTopics()
+  {
+    List<Topic> unusedTopics = _db.Topics.Include(t => t.PostTopics).Where(p => p.PostTopics.Count == 0).ToList();
+    foreach(Topic t in unusedTopics)
+    {
+      _db.Topics.Remove(t);
+    }
+    _db.SaveChanges();
+  }
   public async Task<Post> FindPostById(int id)
   {
     return await _db.Posts.Include(p => p.User).Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).FirstOrDefaultAsync(p => p.PostId == id);
@@ -128,6 +137,7 @@ public class PostsController : Controller
     CreatePostTopics(model.NewTopic, model.PostId);
     _db.Posts.Update(model.EditPost(target));
     _db.SaveChanges();
+    ClearUnusedTopics();
     return RedirectToAction("Index");
   }
   
@@ -142,6 +152,7 @@ public class PostsController : Controller
   {
     _db.Posts.Remove(await FindPostById(id));
     _db.SaveChanges();
+    ClearUnusedTopics();
     return RedirectToAction("Index");
   }
 
