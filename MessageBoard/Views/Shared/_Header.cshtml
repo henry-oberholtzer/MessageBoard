@@ -1,8 +1,8 @@
 <header class="header">
-  @Html.ActionLink("messageboard", "Index", "Home", null, new { @class = "logo row-gradient"})
-  <nav class="nav row-gradient">
-    @Html.ActionLink("Posts", "Index", "Posts")
-    @Html.ActionLink("Topics", "Index", "Topics")
+  <h1 class="logo">@Html.ActionLink("messageboard", "Index", "Home", null, new { @class = "decor decor-active"})</h1>
+  <nav class="nav">
+    @Html.ActionLink("Posts", "Index", "Posts", null, new { @class = "btn"})
+    @Html.ActionLink("Topics", "Index", "Topics", null , new { @class = "btn"})
   </nav>
   @await Html.PartialAsync("../Account/_IdentityCard.cshtml")
 </header>

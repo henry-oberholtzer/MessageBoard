@@ -10,8 +10,10 @@
 </head>
 
 <body>
+  <div class="main">
   @await Html.PartialAsync("_Header.cshtml")
     @RenderBody()
+  </div>
   <script src="~/lib/jquery/dist/jquery.min.js"></script>
   <script src="~/js/scripts.js"></script>
   @await RenderSectionAsync("_ValidationScriptsPartial", required: false)

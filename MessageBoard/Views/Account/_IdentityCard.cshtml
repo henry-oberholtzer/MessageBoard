@@ -1,20 +1,18 @@
-<div class="identity-card">
   @if (User.Identity.IsAuthenticated)
   {
-    <p>@User.Identity.Name</p>
-    @Html.ActionLink("My Profile", "Index", "Account");
-    <br />
-    @Html.ActionLink("Author Post", "Create", "Posts");
-    <br />
+    <div class="identity-card">
+    @Html.ActionLink($"{User.Identity.Name} - Profile", "Index", "Account", null, new { @class = "btn"})
+    @Html.ActionLink("Post", "Create", "Posts", null, new { @class = "btn"})
     @using (Html.BeginForm("LogOut", "Account"))
     {
-      <button type="submit">Log Out</button>
+      <button type="submit" class="btn">Log Out</button>
     }
+    </div>
   }
   else
   {
-    @Html.ActionLink("Register", "Register", "Account")
-    <br />
-    @Html.ActionLink("Login", "Login", "Account")
+    <div class="identity-card signedout">
+    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn"})
+    @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn"})
+    </div>
   }
-</div>
