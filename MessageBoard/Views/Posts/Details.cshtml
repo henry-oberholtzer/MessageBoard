@@ -1,8 +1,15 @@
 @model Post
 
-<h4>@Model.Body</h4>
-<p>@Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId })</p>
-<p>@Html.ActionLink(Model.User.UserName, "Details", "Users", new { id = Model.User.UserName })</p>
-<form asp-action="Delete" asp-controller="Posts" asp-route-id="@Model.PostId" method="post">
-  <button class="btn" type="submit">Delete</button>
+@Html.ActionLink(Model.User.UserName, "Details", "Users", new { id = Model.User.UserName })
+<p>@Model.Body</p>
+<div>
+<p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
+@if(Model.DateEdited.ToString("dd MMM HH:mm:ss") != Model.DatePosted.ToString("dd MMM HH:mm:ss")) {
+  <span>edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
+}
+</p>
+@Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId }, new { @class = "btn" })
+<form asp-action="Delete" asp-controller="Posts" class="hidden-form" asp-route-id="@Model.PostId" method="post">
+  <button class="btn form-btn" type="submit">Delete</button>
 </form>
+</div>

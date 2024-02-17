@@ -9,6 +9,8 @@
   --sixth-details: #478dcf;
   --gradient-blue: var(--primary-background) 33%, var(--secondary-background) 66%, var(--primary-background) 100%;
   --gradient-silver: var(--fifth-details), var(--fourth-details), var(--secondary-text), var(--fourth-details), var(--fifth-details);
+  --gradient-silver-button: var(--fourth-details), var(--secondary-text), var(--fourth-details);
+  --gradient-white-to-clear: var(--primary-text), transparent;
 }
 
 body {
@@ -53,6 +55,12 @@ input {
   background-color: transparent;
 }
 
+p {
+  font-family: 'Pixelify';
+  font-weight: 100;
+  font-size: 18px;
+}
+
 .decor {
   font-family: 'Orbitron';
   font-weight: 600;
@@ -76,30 +84,34 @@ input {
 }
 
 .btn {
-  border: 2px solid transparent;
-  border-bottom: 2px solid var(--sixth-details);
-  border-right: 2px solid var(--sixth-details);
+  border: 1px solid var(--tertiary-details);
+  display: flex;
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
   background-color: transparent;
-  font-weight: 400;
-  color: var(--secondary-text);
+  background: linear-gradient(var(--gradient-silver-button));
+  font-weight: 600;
+  color: var(--primary-background);
   font-size: 16px;
-  padding: 2px 8px;
+  padding: 4px 8px;
+  text-align: left;
+  align-items: center;
   text-transform: lowercase;
   border-radius: 2px;
-  transition: border 400ms ease;
+  box-shadow: 0px 0px transparent;
+  transition: box-shadow 200ms ease;
   cursor: pointer;
 }
 
 .btn:active, .btn:focus, .btn:hover {
-  border-bottom: 2px solid var(--tertiary-details);
-  border-right: 2px solid var(--tertiary-details);
+  box-shadow: 1px 1px var(--tertiary-details);
 }
 
 .identity-card {
+  margin-top: 8px;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   column-gap: 4px;
-  align-items: center;
 }
 
 .identity-card * {
@@ -109,6 +121,10 @@ input {
 .signedout {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.form-btn {
+  width: 100%;
 }
 
 hr {

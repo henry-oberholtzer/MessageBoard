@@ -3,9 +3,9 @@
     <div class="identity-card">
     @Html.ActionLink($"{User.Identity.Name} - Profile", "Index", "Account", null, new { @class = "btn"})
     @Html.ActionLink("Post", "Create", "Posts", null, new { @class = "btn"})
-    @using (Html.BeginForm("LogOut", "Account"))
+    @using (Html.BeginForm("LogOut", "Account", null, FormMethod.Post, true, new { @class = "form-btn"}))
     {
-      <button type="submit" class="btn">Log Out</button>
+      <button type="submit" class="btn form-btn">Log Out</button>
     }
     </div>
   }
