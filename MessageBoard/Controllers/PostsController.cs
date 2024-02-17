@@ -69,7 +69,7 @@ public class PostsController : Controller
     .Include(p => p.User)
     .Include(p => p.PostTopics)
     .ThenInclude(pt => pt.Topic)
-    .OrderBy(p => p.DatePosted)
+    .OrderByDescending(p => p.DatePosted)
     .ToListAsync();
     return View(posts);
   }

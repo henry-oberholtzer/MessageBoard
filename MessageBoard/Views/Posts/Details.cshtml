@@ -1,15 +1,36 @@
 @model Post
 
-@Html.ActionLink(Model.User.UserName, "Details", "Users", new { id = Model.User.UserName })
-<p>@Model.Body</p>
-<div>
-<p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
-@if(Model.DateEdited.ToString("dd MMM HH:mm:ss") != Model.DatePosted.ToString("dd MMM HH:mm:ss")) {
-  <span>edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
-}
-</p>
-@Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId }, new { @class = "btn" })
-<form asp-action="Delete" asp-controller="Posts" class="hidden-form" asp-route-id="@Model.PostId" method="post">
-  <button class="btn form-btn" type="submit">Delete</button>
-</form>
+<div class="post-main">
+  <div class="post-header">
+    <div class="user">
+      @if(Model.User.ProfilePicURL == null)
+      {
+      <img src="~/img/pfp.gif" class="pfp">
+      }
+      else
+      {
+        <img src="@Model.User.ProfilePicURL" class="pfp">
+      }
+      @Html.ActionLink(Model.User.UserName, "Details", "Users", new { id = Model.User.UserName }, new { @class = "username"})
+    </div>
+    <div class="post-actions">
+      @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId }, new { @class = "btn" })
+      <form asp-action="Delete" asp-controller="Posts" class="hidden-form" asp-route-id="@Model.PostId" method="post">
+        <button class="btn form-btn" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="post-body">
+    <p>@Model.Body</p>
+  </div>
+  <hr />
+  <div class="post-details">
+    <p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
+      @if (Model.DateEdited.ToString("dd MMM") != null)
+      {
+      <span> | edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
+      }
+    </p>
+  </div>
 </div>

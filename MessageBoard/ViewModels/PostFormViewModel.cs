@@ -29,7 +29,6 @@ public class PostForumViewModel
     return new Post(){
       Body = PostBody,
       DatePosted = DateTime.Now,
-      DateEdited = DateTime.Now,
       User = user,
     };
   }
