@@ -3,6 +3,7 @@ using MessageBoard.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MessageBoard.Models;
 
@@ -16,6 +17,13 @@ public class TopicsController : Controller
   {
     _userManager = userManager;
     _db = db;
+  }
+
+    public async Task<ApplicationUser> GetCurrentUser()
+  {
+    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    return currentUser;
   }
 
   public Topic GetTopicById(int id)
@@ -35,9 +43,28 @@ public class TopicsController : Controller
     return View(topics);
   }
 
-  public ActionResult Details(int id)
+  public async Task<ActionResult> Details(int id)
   {
-    return View(GetTopicById(id));
+    Topic topic = GetTopicById(id);
+    List<Post> posts = topic.PostTopics.Select(pt => pt.Post).ToList();
+    List<PostViewModel> postViews = new (){};
+    ApplicationUser currentUser = await GetCurrentUser();
+    foreach(Post p in posts)
+    {
+      if(p.User == currentUser)
+      {
+        postViews.Add(new PostViewModel(p, true));
+      }
+      else
+      {
+        postViews.Add(new PostViewModel(p));
+      }
+    }
+    return View(new TopicViewModel{
+      PostViewModels = postViews,
+      Title = topic.Title,
+      TopicId = topic.TopicId,
+    });
   }
 
   public ActionResult Delete(int id)

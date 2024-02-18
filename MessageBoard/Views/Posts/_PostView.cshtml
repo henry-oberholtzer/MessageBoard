@@ -1,0 +1,45 @@
+@model PostViewModel
+
+<div class="post-main">
+  <div class="post-header">
+    <div class="user">
+        @if (Model.ProfilePicURL == null)
+        {
+          <img src="~/img/pfp.gif" class="pfp">
+        }
+        else
+        {
+          <img src="@Model.ProfilePicURL" class="pfp">
+        }
+        <p class="username">@Model.UserName</p>
+    </div>
+    <div class="post-actions">
+      @if (Model.Editable)
+      {
+        @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId }, new { @class = "btn" })
+        <form asp-action="Delete" asp-controller="Posts" class="hidden-form" asp-route-id="@Model.PostId" method="post">
+          <button class="btn form-btn" type="submit">Delete</button>
+        </form>
+      }
+      else
+      {
+        <div class="hidden-form">
+
+        </div>
+      }
+    </div>
+  </div>
+  <hr />
+  <div class="post-body">
+    <p>@Model.Body</p>
+  </div>
+  <hr />
+  <div class="post-details">
+    <p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
+      @if (Model.DateEdited != null)
+      {
+        <span> | edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
+      }
+    </p>
+  </div>
+</div>

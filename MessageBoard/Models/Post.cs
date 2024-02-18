@@ -6,7 +6,10 @@ public class Post
   public string Body { get; set; }
   public DateTime DatePosted { get; set; }
 
-  public DateTime DateEdited { get; set; }
+#nullable enable
+  public DateTime? DateEdited { get; set; }
+
+#nullable disable
 
   public List<PostTopic> PostTopics { get; }
 

@@ -42,9 +42,8 @@ font sizes */
   src: url('../fonts/plex-sans/IBMPlexSans-Regular.ttf');
 } 
 
-* a {
+a {
   text-decoration: none;
-  color: black;
 }
 
 * {
@@ -188,8 +187,10 @@ hr {
 
 .username {
   color: var(--secondary-text);
+  font-family: 'Orbitron';
   width: min-content;
   transition: border 200ms ease;
+  border: 1px solid transparent;
 }
 
 .username:hover, .username:focus, .username:active {
@@ -207,8 +208,13 @@ hr {
   margin: 4px 0;
 }
 
-.post-details {
+.post-link {
+  transition: border 200ms ease;
+  border: 1px solid transparent;
+}
 
+.post-link:hover, .post-link:focus, .post-link:active {
+  border-bottom: 1px solid var(--tertiary-details);
 }
 
 .user {

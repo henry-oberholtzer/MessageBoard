@@ -1,3 +1,9 @@
-@model Topic
+@model TopicViewModel
 
-<h4>@Model.Title</h4>
+<h2 class="decor">Topic: @Model.Title</h2>
+<p>@Model.PostViewModels.Count post(s) found...</p>
+<hr />
+@foreach (PostViewModel p in Model.PostViewModels)
+{
+  @await Html.PartialAsync("../Posts/_PostView", p)
+}

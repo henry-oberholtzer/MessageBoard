@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Controllers;
@@ -34,6 +33,13 @@ public class PostsController : Controller
   public async Task<Post> FindPostById(int id)
   {
     return await _db.Posts.Include(p => p.User).Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).FirstOrDefaultAsync(p => p.PostId == id);
+  }
+
+  public async Task<ApplicationUser> GetCurrentUser()
+  {
+    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    return currentUser;
   }
 
   public void CreatePostTopics(string newTopics, int postId)
@@ -71,13 +77,27 @@ public class PostsController : Controller
     .ThenInclude(pt => pt.Topic)
     .OrderByDescending(p => p.DatePosted)
     .ToListAsync();
-    return View(posts);
+
+    List<PostViewModel> postViews = new(){};
+    ApplicationUser currentUser = await GetCurrentUser();
+    foreach(Post p in posts)
+    {
+      if(p.User == currentUser)
+      {
+        postViews.Add(new PostViewModel(p, true));
+      }
+      else
+      {
+        postViews.Add(new PostViewModel(p));
+      }
+    }
+
+    return View(postViews);
   }
 
   public async Task<IActionResult> UserPosts()
   {
-    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    ApplicationUser currentUser = await GetCurrentUser();
     List<Post> userPosts = _db.Posts
     .Include(p => p.PostTopics)
     .Where(entry => entry.User.Id == currentUser.Id)
@@ -98,8 +118,7 @@ public class PostsController : Controller
     {
       return View("PostForm", model);
     }
-    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    ApplicationUser currentUser = await GetCurrentUser();
     Post newPost = model.ToNewPost(currentUser);
     _db.Posts.Add(newPost);
     _db.SaveChanges();
@@ -123,6 +142,11 @@ public class PostsController : Controller
       return View("PostForm", model);
     }
     Post target = await FindPostById(model.PostId);
+    if(target.User != await GetCurrentUser())
+    {
+      return RedirectToAction("Details", "Post", new { id = target.PostId });
+    }
+
     foreach (PostTopic pt in target.PostTopics)
     {
       _db.PostTopics.Remove(pt);
@@ -144,13 +168,23 @@ public class PostsController : Controller
   [AllowAnonymous]
   public async Task<IActionResult> Details(int id)
   {
-    return View(await FindPostById(id));
+    Post target = await FindPostById(id);
+    if(target.User != await GetCurrentUser())
+    {
+      return View(new PostViewModel(target));
+    }
+    return View(new PostViewModel(target, true));
   }
 
   [HttpPost]
   public async Task<ActionResult> Delete(int id)
   {
-    _db.Posts.Remove(await FindPostById(id));
+    Post target = await FindPostById(id);
+    if(target.User != await GetCurrentUser())
+    {
+      return RedirectToAction("Details", "Post", new { id = target.PostId });
+    }
+    _db.Posts.Remove(target);
     _db.SaveChanges();
     ClearUnusedTopics();
     return RedirectToAction("Index");

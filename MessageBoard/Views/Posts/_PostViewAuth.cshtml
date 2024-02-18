@@ -3,6 +3,7 @@
 <div class="post-main">
   <div class="post-header">
     <div class="user">
+    <a asp-controller="Users" asp-action="Details" class="user">
       @if(Model.User.ProfilePicURL == null)
       {
       <img src="~/img/pfp.gif" class="pfp">
@@ -11,7 +12,8 @@
       {
         <img src="@Model.User.ProfilePicURL" class="pfp">
       }
-      @Html.ActionLink(Model.User.UserName, "Details", "Users", new { id = Model.User.UserName }, new { @class = "username"})
+      <span class="username">@Model.User.UserName</span>
+    </a>
     </div>
     <div class="post-actions">
       @Html.ActionLink("Edit", "Edit", "Posts", new { id = Model.PostId }, new { @class = "btn" })
@@ -27,7 +29,7 @@
   <hr />
   <div class="post-details">
     <p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
-      @if (Model.DateEdited.ToString("dd MMM") != null)
+      @if (Model.DateEdited != null)
       {
       <span> | edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
       }

@@ -1,7 +1,7 @@
-@model List<Post>
+@model List<PostViewModel>
 <h1 class="decor">Posts</h1>
 <hr />
-@foreach (Post p in Model)
+@foreach (PostViewModel p in Model)
 {
-  @await Html.PartialAsync("_PostViewPublic", p);
+  @await Html.PartialAsync("_PostSummary", p);
 }

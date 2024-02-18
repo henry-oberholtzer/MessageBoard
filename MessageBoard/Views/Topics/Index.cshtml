@@ -3,8 +3,9 @@
 <hr />
 @foreach (Topic t in Model)
 {
-  <div>
-    <h4>@Html.ActionLink(t.Title, "Details", "Topics", new { id = t.TopicId })</h4>
+  <div class="post-main">
+    <p class="decor">@Html.ActionLink(t.Title, "Details", "Topics", new { id = t.TopicId })</p>
+    <hr />
     <p>@t.PostTopics.Count post(s) in this topic</p>
   </div>
 }

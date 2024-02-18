@@ -1,0 +1,22 @@
+@model PostViewModel
+@{
+  string summary = new(Model.Body.Take(16).ToArray());
+}
+<div class="post-main">
+  <div class="post-header">
+    <div class="user">
+      @if (Model.ProfilePicURL == null)
+      {
+        <img src="~/img/pfp.gif" class="pfp">
+      }
+      else
+      {
+        <img src="@Model.ProfilePicURL" class="pfp">
+      }
+      <p class="username">@Model.UserName</p>
+    </div>
+    <a class="post-link" asp-controller="Posts" asp-action="Details" asp-route-id="@Model.PostId">
+      @summary...
+    </a>
+  </div>
+</div>
