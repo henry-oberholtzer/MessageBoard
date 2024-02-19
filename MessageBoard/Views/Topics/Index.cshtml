@@ -1,11 +1,8 @@
-@model List<Topic>
+@model List<TopicViewModel>
 <h1 class="decor">Topics</h1>
+<p class="whisper">Topics are automatically removed from the board if unused.</p>
 <hr />
-@foreach (Topic t in Model)
+@foreach (TopicViewModel t in Model)
 {
-  <div class="post-main">
-    <p class="decor">@Html.ActionLink(t.Title, "Details", "Topics", new { id = t.TopicId })</p>
-    <hr />
-    <p>@t.PostTopics.Count post(s) in this topic</p>
-  </div>
+  @await Html.PartialAsync("_TopicSummary", t)
 }

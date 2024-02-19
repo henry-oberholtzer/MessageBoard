@@ -1,4 +1,7 @@
 @model PostViewModel
+@{
+  int count = Model.Topics.Count() - 1;
+}
 
 <div class="post-main">
   <div class="post-header">
@@ -11,7 +14,7 @@
         {
           <img src="@Model.ProfilePicURL" class="pfp">
         }
-        <p class="username">@Model.UserName</p>
+        <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.PostId"><p class="username">@Model.UserName</p></a>
     </div>
     <div class="post-actions">
       @if (Model.Editable)
@@ -31,14 +34,17 @@
   </div>
   <hr />
   <div class="post-body">
+    <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.PostId">
     <p>@Model.Body</p>
+    </a>
   </div>
   <hr />
   <div class="post-details">
-    <p>posted @Model.DatePosted.ToString("dd MMM HH:mm:ss")
+    <p>posted in <a asp-controller="Topics" asp-action="Details" asp-route-id="@Model.Topics.First().TopicId">@Model.Topics.First().Title</a> and @count more</p>
+    <p>@Model.DatePosted.ToString("dd/MM/HH:mm:ss")
       @if (Model.DateEdited != null)
       {
-        <span> | edited @Model.DatePosted.ToString("dd MMM HH:mm:ss")</span>
+        <span> | edit @Model.DateEdited?.ToString("dd/MM/HH:mm:ss")</span>
       }
     </p>
   </div>

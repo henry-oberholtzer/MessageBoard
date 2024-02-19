@@ -21,7 +21,7 @@ public class PostsController : Controller
     _db = db;
   }
 
-  public void ClearUnusedTopics()
+  private void ClearUnusedTopics()
   {
     List<Topic> unusedTopics = _db.Topics.Include(t => t.PostTopics).Where(p => p.PostTopics.Count == 0).ToList();
     foreach(Topic t in unusedTopics)
@@ -30,19 +30,19 @@ public class PostsController : Controller
     }
     _db.SaveChanges();
   }
-  public async Task<Post> FindPostById(int id)
+  private async Task<Post> FindPostById(int id)
   {
     return await _db.Posts.Include(p => p.User).Include(p => p.PostTopics).ThenInclude(pt => pt.Topic).FirstOrDefaultAsync(p => p.PostId == id);
   }
 
-  public async Task<ApplicationUser> GetCurrentUser()
+  private async Task<ApplicationUser> GetCurrentUser()
   {
     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
     return currentUser;
   }
 
-  public void CreatePostTopics(string newTopics, int postId)
+  private void CreatePostTopics(string newTopics, int postId)
   {
     if (!string.IsNullOrEmpty(newTopics))
     {

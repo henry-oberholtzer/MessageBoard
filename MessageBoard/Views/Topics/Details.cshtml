@@ -1,5 +1,4 @@
 @model TopicViewModel
-
 <h2 class="decor">Topic: @Model.Title</h2>
 <p>@Model.PostViewModels.Count post(s) found...</p>
 <hr />
@@ -7,3 +6,4 @@
 {
   @await Html.PartialAsync("../Posts/_PostView", p)
 }
+<a class="btn" asp-action="Index" asp-controller="Topics"><- Return to Topics</a>

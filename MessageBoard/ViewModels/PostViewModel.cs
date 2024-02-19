@@ -13,6 +13,7 @@ public class PostViewModel
     Body = post.Body;
     DatePosted = post.DatePosted;
     DateEdited = post.DateEdited;
+    Topics = post.PostTopics.Select(pt => pt.Topic).ToList();
   }
 
   public bool Editable { get; set; }
@@ -26,6 +27,8 @@ public class PostViewModel
   public string Body { get; set; }
 
   public DateTime DatePosted { get; set; }
+
+  public List<Topic> Topics { get; set; }
 
 #nullable enable
   public DateTime? DateEdited { get; set; }

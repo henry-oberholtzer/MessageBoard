@@ -1,3 +1,10 @@
 @model PostViewModel
 @await Html.PartialAsync("_PostView")
-
+<h3 class="decor">In Topics:</h3>
+<ul>
+@foreach (Topic t in Model.Topics)
+{
+  <a asp-controller="Topics" asp-action="Details" asp-route-id="@t.TopicId"><li>@t.Title</li></a>
+}
+</ul>
+<a class="btn" asp-action="Index" asp-controller="Posts"><- Return to Posts</a>

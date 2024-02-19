@@ -9,20 +9,27 @@
   }
 }
 
-<h1>@action Post</h1>
+<h1 class="decor">@action Post</h1>
+<hr />
 @using (Html.BeginForm())
 {
   @if(Model.Edit){
     @Html.HiddenFor(m => m.PostId)
   }
   @Html.LabelFor(m => m.PostBody)
-  @Html.EditorFor(m => m.PostBody)
+  <br />
+  @Html.TextAreaFor(m => m.PostBody)
+  <br />
   @if(Model.TopicOptions.Any())
   {
     @Html.LabelFor(m => m.TopicOptions)
-    <select asp-for="@Model.SelectedTopics" asp-items="@Model.TopicOptions"></select>
+    <br />
+    <select asp-for="@Model.SelectedTopics" asp-items="@Model.TopicOptions">
+    </select>
   }
+  <br />
   @Html.LabelFor(m => m.NewTopic)
   @Html.TextBoxFor(m => m.NewTopic)
-  <button type="submit">@buttonText</button>
+  <br />
+  <button type="submit" class="btn">@buttonText</button>
 }

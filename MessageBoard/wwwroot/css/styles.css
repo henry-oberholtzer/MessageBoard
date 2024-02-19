@@ -51,19 +51,36 @@ a {
   color: var(--secondary-text);
 }
 
-input {
+input, select, textarea {
   background-color: transparent;
+  font-family: 'Plex Sans';
+  display: flex;
+  width: 100%;
 }
 
-h1, h2, h3 {
-  font-size: 36px;
+option:checked {
+  background: var(--fourth-details);
+  color: var(--tertiary-details);
+
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Orbitron';
 }
+
+h1 {
+  font-size: 36px;
+}
+
 
 p, span {
   font-family: 'Plex Sans';
   font-weight: 100;
   font-size: 18px;
+}
+
+.whisper {
+  font-size: 12px;
 }
 
 .decor {
@@ -233,4 +250,8 @@ hr {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 4px;
+}
+
+.post-header p {
+  margin: 0;
 }

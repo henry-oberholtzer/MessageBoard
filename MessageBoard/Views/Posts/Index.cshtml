@@ -3,5 +3,5 @@
 <hr />
 @foreach (PostViewModel p in Model)
 {
-  @await Html.PartialAsync("_PostSummary", p);
+  @await Html.PartialAsync("_PostView", p);
 }

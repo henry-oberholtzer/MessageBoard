@@ -39,9 +39,16 @@ public class TopicsController : Controller
   public ActionResult Index()
   {
     List<Topic> topics = _db.Topics
-    .Include(t => t.PostTopics).ThenInclude(pt => pt.Post).ToList();
-    return View(topics);
+    .Include(t => t.PostTopics).ToList();
+    List<TopicViewModel> topicViewModels = new(){};
+    foreach (Topic t in topics)
+    {
+      topicViewModels.Add(new TopicViewModel(t));
+    }
+    return View(topicViewModels);
   }
+
+  [AllowAnonymous]
 
   public async Task<ActionResult> Details(int id)
   {

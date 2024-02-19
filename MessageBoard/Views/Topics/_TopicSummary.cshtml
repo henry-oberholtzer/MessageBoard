@@ -1,0 +1,9 @@
+@model TopicViewModel
+
+  <div class="post-main">
+    <div class="post-header">
+    <p class="decor">@Html.ActionLink(Model.Title, "Details", "Topics", new { id = Model.TopicId })</p>
+    </div>
+    <hr />
+    <div class="post-details"><p>@Model.PostsCount post(s) in this topic</p></div>
+  </div>

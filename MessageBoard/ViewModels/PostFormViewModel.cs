@@ -14,6 +14,7 @@ public class PostForumViewModel
   [Required]
   public string PostBody { get; set; }
 
+  [Display(Name = "Topic")]
   public SelectList TopicOptions { get; set; }
 
   [Display(Name = "Assign to topics")]

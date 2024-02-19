@@ -1,3 +1,15 @@
-<h1 class="decor">Latest Posts</h1>
+@model HomeViewModel
 
+<h2 class="decor">Latest Posts</h2>
+@foreach(PostViewModel p in Model.PostViewModels)
+{
+  @await Html.PartialAsync("../Posts/_PostSummary", p)
+}
+<a class="btn" asp-action="Index" asp-controller="Posts">See more -></a>
+<hr />
 <h2 class="decor">Latest Topics</h2>
+@foreach(TopicViewModel t in Model.TopicViewModels)
+{
+  @await Html.PartialAsync("../Topics/_TopicSummary", t)
+}
+<a class="btn" asp-action="Index" asp-controller="Topics">See more -></a>
