@@ -4,7 +4,7 @@ A mobile first web application for users to post on a general message board buil
 
 By Henry Oberholtzer
 
-![Mobile UI](https://github.com/henry-oberholtzer/MessageBoard/blob/main/ui_v1.png?raw=true)
+![Mobile UI](https://github.com/henry-oberholtzer/MessageBoard/blob/main/ui_v1.png?raw=true | height=400)
 
 ## Technologies Used
 
