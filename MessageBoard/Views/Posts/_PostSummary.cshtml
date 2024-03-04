@@ -21,6 +21,9 @@
     </a>
   </div>
   <div class="post-details">
+    @if(Model.Topics.Count > 0)
+    {
     <p>posted in <a asp-controller="Topics" asp-action="Details" asp-route-id="@Model.Topics.First().TopicId">@Model.Topics.First().Title</a> and @count more</p>
+    }
   </div>
 </div>
