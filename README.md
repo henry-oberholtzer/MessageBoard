@@ -1,8 +1,10 @@
 # MessageBoard
 
-A web application built with C# and Razor Pages, using a MVC structure and a MySQL database, using the EFCore framework.
+A mobile first web application for users to post on a general message board built with C# and Razor Pages, using a MVC structure and a MySQL database, using the EFCore framework.
 
 By Henry Oberholtzer
+
+![Mobile UI](https://github.com/henry-oberholtzer/MessageBoard/blob/main/ui_v1.png?raw=true)
 
 ## Technologies Used
 
